@@ -1,0 +1,316 @@
+2026-05-08T02:37:24.092Z [INFO] ----------------------invoke appmod-list-jdks----------------------
+2026-05-08T02:37:24.095Z [INFO] [Tool.invoke]({name: appmod-list-jdks, modelId: auto, input: {
+  "sessionId": "",
+  "projectPath": "c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos"
+}}).
+2026-05-08T02:37:24.096Z [INFO] [Tool.invoke] do invoke.
+2026-05-08T02:37:25.248Z [INFO] [Tool.invoke]({result: {
+  "message": "We found following jdks in your system:\n\n1. Java 1.8.0_482\n   📁 Path: C:\\Users\\zezao\\.jdk\\jdk-8\\bin\n   🏷️ Source: install\n\n2. Java 11.0.28\n   📁 Path: C:\\Users\\zezao\\.jdk\\jdk-11.0.28\\bin\n   🏷️ Source: install\n\n3. Java 17.0.19\n   📁 Path: C:\\Users\\zezao\\AppData\\Roaming\\Code\\User\\globalStorage\\pleiades.java-extension-pack-jdk\\java\\17\\bin\n   🏷️ Source: VSCode\n\n4. Java 21.0.8\n   📁 Path: C:\\Program Files\\Java\\jdk-21\\bin\n   🏷️ Source: PATH,JAVA_HOME,VSCode\n\n5. Java 25.0.3\n   📁 Path: C:\\Users\\zezao\\AppData\\Roaming\\Code\\User\\globalStorage\\pleiades.java-extension-pack-jdk\\java\\25\\bin\n   🏷️ Source: VSCode\n\n6. Java 26\n   📁 Path: C:\\Users\\zezao\\AppData\\Roaming\\Code\\User\\globalStorage\\pleiades.java-extension-pack-jdk\\java\\latest\\bin\n   🏷️ Source: VSCode\n\nTotal: 6 JDK installation(s) found"
+}}).
+2026-05-08T02:37:25.249Z [INFO] ----------------------invoked appmod-list-jdks----------------------
+2026-05-08T02:37:25.542Z [INFO] ----------------------invoke appmod-list-mavens----------------------
+2026-05-08T02:37:25.543Z [INFO] [Tool.invoke]({name: appmod-list-mavens, modelId: auto, input: {
+  "sessionId": "",
+  "projectPath": "c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos"
+}}).
+2026-05-08T02:37:25.543Z [INFO] [Tool.invoke] do invoke.
+2026-05-08T02:37:25.561Z [INFO] [Tool.invoke]({result: {
+  "message": "We found following maven installations in your system:\n\n1. 📁 Path: C:\\mavem\\apache-maven-3.9.14\\bin\n   🏷️ Source: PATH\n\nTotal: 1 Maven installation(s) found"
+}}).
+2026-05-08T02:37:25.562Z [INFO] ----------------------invoked appmod-list-mavens----------------------
+2026-05-08T02:37:33.210Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-05-08T02:37:33.211Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "projectPath": "c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos",
+  "event": "precheckCompleted",
+  "phase": "precheck",
+  "status": "succeeded",
+  "details": {
+    "baseJdkVersion": "7",
+    "targetVersion": "Java 21"
+  }
+}}).
+2026-05-08T02:37:33.212Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-05-08T02:37:33.213Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-05-08T02:37:33.213Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-05-08T02:37:33.306Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-05-08T02:37:33.306Z [INFO] [Tool.invoke]({name: appmod-report-event, modelId: auto, input: {
+  "projectPath": "c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos",
+  "event": "precheckCompleted",
+  "phase": "precheck",
+  "status": "succeeded",
+  "details": {
+    "baseJdkVersion": "7",
+    "targetVersion": "Java 21"
+  }
+}}).
+2026-05-08T02:37:33.307Z [INFO] [Tool.invoke] do invoke.
+2026-05-08T02:37:33.311Z [INFO] Project c:\Users\zezao\OneDrive\Área de Trabalho\doacaoalimentos is a maven project, try to get java version from pom.xml
+2026-05-08T02:37:33.314Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'precheckCompleted' reported!\nSession ID: 20260508023724,\nSession Dir: c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos\\.github\\java-upgrade\\20260508023724"
+}}).
+2026-05-08T02:37:33.314Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-05-08T02:37:33.322Z [INFO] Project java version: 7
+2026-05-08T02:37:33.323Z [INFO] Maven project detected.
+2026-05-08T02:37:33.324Z [INFO] Build tool type: mvn
+2026-05-08T02:37:34.109Z [INFO] JDK: undefined
+2026-05-08T02:37:34.110Z [ERROR] Failed to detect or resolve JDK for the project at c:\Users\zezao\OneDrive\Área de Trabalho\doacaoalimentos.
+2026-05-08T02:37:34.111Z [WARN] [ReportEventTool] Full project info unavailable, attempting lightweight fallback: UserError: Failed to detect or resolve JDK for the project at c:\Users\zezao\OneDrive\Área de Trabalho\doacaoalimentos. Please ensure JDK 7 is installed and properly configured on the machine.
+2026-05-08T02:37:34.113Z [INFO] Maven project detected.
+2026-05-08T02:37:34.115Z [INFO] Project c:\Users\zezao\OneDrive\Área de Trabalho\doacaoalimentos is a maven project, try to get java version from pom.xml
+2026-05-08T02:37:38.376Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-05-08T02:37:38.377Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "event": "planGenerationStarted",
+  "phase": "plan",
+  "projectPath": "c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos",
+  "sessionId": "20260508023724",
+  "status": "succeeded"
+}}).
+2026-05-08T02:37:38.378Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-05-08T02:37:38.379Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-05-08T02:37:38.379Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-05-08T02:37:38.445Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-05-08T02:37:38.446Z [INFO] [Tool.invoke]({name: appmod-report-event, modelId: auto, input: {
+  "event": "planGenerationStarted",
+  "phase": "plan",
+  "projectPath": "c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos",
+  "sessionId": "20260508023724",
+  "status": "succeeded"
+}}).
+2026-05-08T02:37:38.447Z [INFO] [Tool.invoke] do invoke.
+2026-05-08T02:37:38.449Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'planGenerationStarted' reported!\nSession ID: 20260508023724,\nSession Dir: c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos\\.github\\java-upgrade\\20260508023724"
+}}).
+2026-05-08T02:37:38.449Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-05-08T02:38:21.909Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-05-08T02:38:21.911Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "event": "planReviewed",
+  "phase": "plan",
+  "projectPath": "c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos",
+  "sessionId": "20260508023724",
+  "status": "succeeded"
+}}).
+2026-05-08T02:38:21.911Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-05-08T02:38:21.912Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-05-08T02:38:21.912Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-05-08T02:38:21.980Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-05-08T02:38:21.980Z [INFO] [Tool.invoke]({name: appmod-report-event, modelId: auto, input: {
+  "event": "planReviewed",
+  "phase": "plan",
+  "projectPath": "c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos",
+  "sessionId": "20260508023724",
+  "status": "succeeded"
+}}).
+2026-05-08T02:38:21.981Z [INFO] [Tool.invoke] do invoke.
+2026-05-08T02:38:21.984Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'planReviewed' reported!\nSession ID: 20260508023724,\nSession Dir: c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos\\.github\\java-upgrade\\20260508023724"
+}}).
+2026-05-08T02:38:21.985Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-05-08T02:38:25.493Z [INFO] ---------------------prepare appmod-confirm-upgrade-plan----------------------
+2026-05-08T02:38:25.493Z [INFO] [Tool.prepareInvocation]({name: appmod-confirm-upgrade-plan, input: {
+  "sessionId": "20260508023724"
+}}).
+2026-05-08T02:38:25.494Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-05-08T02:38:25.496Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Review [upgrade plan](file:///c:/Users/zezao/OneDrive/Área de Trabalho/doacaoalimentos/.github/java-upgrade/20260508023724/plan.md)",
+  "confirmationMessages": {
+    "title": "Plan generated",
+    "message": "Please review the generated plan and make any necessary adjustments before proceeding. You can modify the generated [`plan.md`](file:///c:/Users/zezao/OneDrive/Área de Trabalho/doacaoalimentos/.github/java-upgrade/20260508023724/plan.md) directly."
+  }
+}}).
+2026-05-08T02:38:25.496Z [INFO] ----------------------prepared appmod-confirm-upgrade-plan----------------------
+2026-05-08T02:45:44.816Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-05-08T02:45:44.817Z [INFO] [Tool.invoke]({name: appmod-report-event, modelId: auto, input: {
+  "projectPath": "c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos",
+  "event": "precheckCompleted",
+  "phase": "precheck",
+  "status": "succeeded",
+  "details": {
+    "baseJdkVersion": "7",
+    "targetVersion": "Java 21"
+  }
+}}).
+2026-05-08T02:45:44.818Z [INFO] [Tool.invoke] do invoke.
+2026-05-08T02:45:44.820Z [INFO] Project c:\Users\zezao\OneDrive\Área de Trabalho\doacaoalimentos is a maven project, try to get java version from pom.xml
+2026-05-08T02:45:44.822Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'precheckCompleted' reported!\nSession ID: 20260508023724,\nSession Dir: c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos\\.github\\java-upgrade\\20260508023724"
+}}).
+2026-05-08T02:45:44.822Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-05-08T02:45:44.826Z [INFO] Project java version: 7
+2026-05-08T02:45:44.828Z [INFO] Maven project detected.
+2026-05-08T02:45:44.828Z [INFO] Build tool type: mvn
+2026-05-08T02:45:45.766Z [INFO] JDK: undefined
+2026-05-08T02:45:45.767Z [ERROR] Failed to detect or resolve JDK for the project at c:\Users\zezao\OneDrive\Área de Trabalho\doacaoalimentos.
+2026-05-08T02:45:45.767Z [WARN] [ReportEventTool] Full project info unavailable, attempting lightweight fallback: UserError: Failed to detect or resolve JDK for the project at c:\Users\zezao\OneDrive\Área de Trabalho\doacaoalimentos. Please ensure JDK 7 is installed and properly configured on the machine.
+2026-05-08T02:45:45.769Z [INFO] Maven project detected.
+2026-05-08T02:45:45.770Z [INFO] Project c:\Users\zezao\OneDrive\Área de Trabalho\doacaoalimentos is a maven project, try to get java version from pom.xml
+2026-05-08T02:45:49.145Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-05-08T02:45:49.146Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "event": "planGenerationStarted",
+  "phase": "plan",
+  "projectPath": "c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos",
+  "sessionId": "20260508023724",
+  "status": "succeeded"
+}}).
+2026-05-08T02:45:49.147Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-05-08T02:45:49.148Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-05-08T02:45:49.148Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-05-08T02:45:49.215Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-05-08T02:45:49.216Z [INFO] [Tool.invoke]({name: appmod-report-event, modelId: auto, input: {
+  "event": "planGenerationStarted",
+  "phase": "plan",
+  "projectPath": "c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos",
+  "sessionId": "20260508023724",
+  "status": "succeeded"
+}}).
+2026-05-08T02:45:49.217Z [INFO] [Tool.invoke] do invoke.
+2026-05-08T02:45:49.218Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'planGenerationStarted' reported!\nSession ID: 20260508023724,\nSession Dir: c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos\\.github\\java-upgrade\\20260508023724"
+}}).
+2026-05-08T02:45:49.219Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-05-08T02:45:49.704Z [INFO] ---------------------prepare appmod-list-jdks----------------------
+2026-05-08T02:45:49.705Z [INFO] [Tool.prepareInvocation]({name: appmod-list-jdks, input: {
+  "sessionId": "20260508023724"
+}}).
+2026-05-08T02:45:49.706Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-05-08T02:45:49.707Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "List jdks"
+}}).
+2026-05-08T02:45:49.708Z [INFO] ----------------------prepared appmod-list-jdks----------------------
+2026-05-08T02:45:49.779Z [INFO] ----------------------invoke appmod-list-jdks----------------------
+2026-05-08T02:45:49.780Z [INFO] [Tool.invoke]({name: appmod-list-jdks, modelId: auto, input: {
+  "sessionId": "20260508023724"
+}}).
+2026-05-08T02:45:49.780Z [INFO] [Tool.invoke] do invoke.
+2026-05-08T02:45:50.178Z [INFO] [Tool.invoke]({result: {
+  "message": "We found following jdks in your system:\n\n1. Java 1.8.0_482\n   📁 Path: C:\\Users\\zezao\\.jdk\\jdk-8\\bin\n   🏷️ Source: install\n\n2. Java 11.0.28\n   📁 Path: C:\\Users\\zezao\\.jdk\\jdk-11.0.28\\bin\n   🏷️ Source: install\n\n3. Java 17.0.19\n   📁 Path: C:\\Users\\zezao\\AppData\\Roaming\\Code\\User\\globalStorage\\pleiades.java-extension-pack-jdk\\java\\17\\bin\n   🏷️ Source: VSCode\n\n4. Java 21.0.8\n   📁 Path: C:\\Program Files\\Java\\jdk-21\\bin\n   🏷️ Source: PATH,JAVA_HOME,VSCode\n\n5. Java 25.0.3\n   📁 Path: C:\\Users\\zezao\\AppData\\Roaming\\Code\\User\\globalStorage\\pleiades.java-extension-pack-jdk\\java\\25\\bin\n   🏷️ Source: VSCode\n\n6. Java 26\n   📁 Path: C:\\Users\\zezao\\AppData\\Roaming\\Code\\User\\globalStorage\\pleiades.java-extension-pack-jdk\\java\\latest\\bin\n   🏷️ Source: VSCode\n\nTotal: 6 JDK installation(s) found"
+}}).
+2026-05-08T02:45:50.179Z [INFO] ----------------------invoked appmod-list-jdks----------------------
+2026-05-08T02:45:50.194Z [INFO] ---------------------prepare appmod-list-mavens----------------------
+2026-05-08T02:45:50.195Z [INFO] [Tool.prepareInvocation]({name: appmod-list-mavens, input: {
+  "sessionId": "20260508023724",
+  "includeVersion": true
+}}).
+2026-05-08T02:45:50.195Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-05-08T02:45:50.196Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "List mavens"
+}}).
+2026-05-08T02:45:50.197Z [INFO] ----------------------prepared appmod-list-mavens----------------------
+2026-05-08T02:45:50.272Z [INFO] ----------------------invoke appmod-list-mavens----------------------
+2026-05-08T02:45:50.273Z [INFO] [Tool.invoke]({name: appmod-list-mavens, modelId: auto, input: {
+  "sessionId": "20260508023724",
+  "includeVersion": true
+}}).
+2026-05-08T02:45:50.273Z [INFO] [Tool.invoke] do invoke.
+2026-05-08T02:45:51.358Z [INFO] [Tool.invoke]({result: {
+  "message": "We found following maven installations in your system:\n\n1. Maven 3.9.14\n   📁 Path: C:\\mavem\\apache-maven-3.9.14\\bin\n   🏷️ Source: PATH\n\nTotal: 1 Maven installation(s) found"
+}}).
+2026-05-08T02:45:51.360Z [INFO] ----------------------invoked appmod-list-mavens----------------------
+2026-05-08T02:46:19.633Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-05-08T02:46:19.633Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "event": "planReviewed",
+  "phase": "plan",
+  "projectPath": "c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos",
+  "sessionId": "20260508023724",
+  "status": "succeeded"
+}}).
+2026-05-08T02:46:19.634Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-05-08T02:46:19.635Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-05-08T02:46:19.635Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-05-08T02:46:19.707Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-05-08T02:46:19.707Z [INFO] [Tool.invoke]({name: appmod-report-event, modelId: auto, input: {
+  "event": "planReviewed",
+  "phase": "plan",
+  "projectPath": "c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos",
+  "sessionId": "20260508023724",
+  "status": "succeeded"
+}}).
+2026-05-08T02:46:19.708Z [INFO] [Tool.invoke] do invoke.
+2026-05-08T02:46:19.711Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'planReviewed' reported!\nSession ID: 20260508023724,\nSession Dir: c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos\\.github\\java-upgrade\\20260508023724"
+}}).
+2026-05-08T02:46:19.712Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-05-08T02:46:20.015Z [INFO] ---------------------prepare appmod-confirm-upgrade-plan----------------------
+2026-05-08T02:46:20.016Z [INFO] [Tool.prepareInvocation]({name: appmod-confirm-upgrade-plan, input: {
+  "sessionId": "20260508023724"
+}}).
+2026-05-08T02:46:20.017Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-05-08T02:46:20.018Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Review [upgrade plan](file:///c:/Users/zezao/OneDrive/Área de Trabalho/doacaoalimentos/.github/java-upgrade/20260508023724/plan.md)",
+  "confirmationMessages": {
+    "title": "Plan generated",
+    "message": "Please review the generated plan and make any necessary adjustments before proceeding. You can modify the generated [`plan.md`](file:///c:/Users/zezao/OneDrive/Área de Trabalho/doacaoalimentos/.github/java-upgrade/20260508023724/plan.md) directly."
+  }
+}}).
+2026-05-08T02:46:20.019Z [INFO] ----------------------prepared appmod-confirm-upgrade-plan----------------------
+2026-05-08T02:49:58.025Z [INFO] ----------------------invoke appmod-confirm-upgrade-plan----------------------
+2026-05-08T02:49:58.026Z [INFO] [Tool.invoke]({name: appmod-confirm-upgrade-plan, modelId: auto, input: {
+  "sessionId": "20260508023724"
+}}).
+2026-05-08T02:49:58.027Z [INFO] [Tool.invoke] do invoke.
+2026-05-08T02:49:58.027Z [INFO] Upgrade plan confirmed successfully.
+2026-05-08T02:49:58.036Z [INFO] [Tool.invoke]({result: {
+  "message": "Generated plan is reviewed and confirmed by the user! the upgrade process will start now and be tracked in markdown file: c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos\\.github\\java-upgrade\\20260508023724\\progress.md."
+}}).
+2026-05-08T02:49:58.037Z [INFO] ----------------------invoked appmod-confirm-upgrade-plan----------------------
+2026-05-08T02:50:02.526Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-05-08T02:50:02.527Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "event": "planConfirmed",
+  "phase": "plan",
+  "projectPath": "c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos",
+  "sessionId": "20260508023724",
+  "status": "succeeded"
+}}).
+2026-05-08T02:50:02.527Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-05-08T02:50:02.528Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-05-08T02:50:02.529Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-05-08T02:50:02.592Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-05-08T02:50:02.593Z [INFO] [Tool.invoke]({name: appmod-report-event, modelId: auto, input: {
+  "event": "planConfirmed",
+  "phase": "plan",
+  "projectPath": "c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos",
+  "sessionId": "20260508023724",
+  "status": "succeeded"
+}}).
+2026-05-08T02:50:02.594Z [INFO] [Tool.invoke] do invoke.
+2026-05-08T02:50:02.595Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'planConfirmed' reported!\nSession ID: 20260508023724,\nSession Dir: c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos\\.github\\java-upgrade\\20260508023724"
+}}).
+2026-05-08T02:50:02.596Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-05-08T02:50:09.090Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-05-08T02:50:09.091Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "event": "planExecutionStarted",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos",
+  "sessionId": "20260508023724",
+  "status": "succeeded"
+}}).
+2026-05-08T02:50:09.092Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-05-08T02:50:09.092Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-05-08T02:50:09.093Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-05-08T02:50:09.156Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-05-08T02:50:09.156Z [INFO] [Tool.invoke]({name: appmod-report-event, modelId: auto, input: {
+  "event": "planExecutionStarted",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos",
+  "sessionId": "20260508023724",
+  "status": "succeeded"
+}}).
+2026-05-08T02:50:09.157Z [INFO] [Tool.invoke] do invoke.
+2026-05-08T02:50:09.329Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'planExecutionStarted' reported!\nSession ID: 20260508023724,\nSession Dir: c:\\Users\\zezao\\OneDrive\\Área de Trabalho\\doacaoalimentos\\.github\\java-upgrade\\20260508023724"
+}}).
+2026-05-08T02:50:09.330Z [INFO] ----------------------invoked appmod-report-event----------------------

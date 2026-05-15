@@ -15,7 +15,7 @@ public class DoacaoDao {
     public boolean salvar(Doacao doacao) {
         String sql = "INSERT INTO doacoes (doador_id, instituicao_id, descricao, data_doacao) VALUES (?, ?, ?, ?)";
         try (Connection con = Conexao.getConnection();
-             PreparedStatement stm = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            PreparedStatement stm = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stm.setInt(1, doacao.getDoadorId());
             stm.setInt(2, doacao.getInstituicaoId());
             stm.setString(3, doacao.getDescricao());
@@ -39,8 +39,8 @@ public class DoacaoDao {
         String sql = "SELECT id, doador_id, instituicao_id, descricao, data_doacao FROM doacoes";
         List<Doacao> doacoes = new ArrayList<Doacao>();
         try (Connection con = Conexao.getConnection();
-             PreparedStatement stm = con.prepareStatement(sql);
-             ResultSet rs = stm.executeQuery()) {
+            PreparedStatement stm = con.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery()) {
             while (rs.next()) {
                 Doacao doacao = new Doacao();
                 doacao.setId(rs.getInt("id"));
@@ -59,7 +59,7 @@ public class DoacaoDao {
     public Doacao buscarPorId(int id) {
         String sql = "SELECT id, doador_id, instituicao_id, descricao, data_doacao FROM doacoes WHERE id = ?";
         try (Connection con = Conexao.getConnection();
-             PreparedStatement stm = con.prepareStatement(sql)) {
+            PreparedStatement stm = con.prepareStatement(sql)) {
             stm.setInt(1, id);
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
@@ -81,7 +81,7 @@ public class DoacaoDao {
     public boolean atualizar(Doacao doacao) {
         String sql = "UPDATE doacoes SET doador_id = ?, instituicao_id = ?, descricao = ?, data_doacao = ? WHERE id = ?";
         try (Connection con = Conexao.getConnection();
-             PreparedStatement stm = con.prepareStatement(sql)) {
+            PreparedStatement stm = con.prepareStatement(sql)) {
             stm.setInt(1, doacao.getDoadorId());
             stm.setInt(2, doacao.getInstituicaoId());
             stm.setString(3, doacao.getDescricao());
@@ -97,7 +97,7 @@ public class DoacaoDao {
     public boolean excluir(int id) {
         String sql = "DELETE FROM doacoes WHERE id = ?";
         try (Connection con = Conexao.getConnection();
-             PreparedStatement stm = con.prepareStatement(sql)) {
+            PreparedStatement stm = con.prepareStatement(sql)) {
             stm.setInt(1, id);
             return stm.executeUpdate() > 0;
         } catch (SQLException ex) {

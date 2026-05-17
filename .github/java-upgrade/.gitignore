@@ -1,0 +1,11 @@
+# Removido padrão que ignorava tudo (**/*)
+# Adicione regras específicas aqui se necessário, por exemplo:
+# Arquivos temporários de editor
+*.swp
+*.tmp
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+# Node / build (se aplicável)
+node_modules/
+dist/

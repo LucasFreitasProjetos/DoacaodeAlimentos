@@ -1,5 +1,8 @@
+package br.com.doacaoalimentos.test;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
+import br.com.doacaoalimentos.model.Doador;
 
 public class DoadorTest {
 

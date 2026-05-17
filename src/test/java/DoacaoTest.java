@@ -1,6 +1,9 @@
+package br.com.doacaoalimentos.test;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 import java.sql.Date;
+import br.com.doacaoalimentos.model.Doacao;
 
 public class DoacaoTest {
 

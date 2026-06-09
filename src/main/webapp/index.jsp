@@ -16,6 +16,7 @@
                 <li><a href="doador/listar.jsp">Doadores</a></li>
                 <li><a href="instituicao/listar.jsp">Instituições</a></li>
                 <li><a href="doacao/listar.jsp">Doações</a></li>
+                <li><a href="app.html">Front-end</a></li>
             </ul>
         </div>
     </nav>

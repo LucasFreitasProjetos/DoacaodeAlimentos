@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Front-end Simples - Doação de Alimentos</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🍎 Doação de Alimentos</div>
+            <ul class="nav-menu">
+                <li><a href="index.jsp">Home</a></li>
+                <li><a href="app.html" class="active">API Front-end</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Front-end Simples</h1>
+                <p>Use este painel para consultar e cadastrar dados via API REST.</p>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h4>Listar</h4>
+                    <p>Consulte doadores, instituições e doações.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h4>Cadastrar</h4>
+                    <p>Envie formulários para criar novos registros.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h4>Testar</h4>
+                    <p>Veja o resultado diretamente no navegador.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard">
+            <div class="card">
+                <h3>Doadores</h3>
+                <button class="btn btn-secondary" onclick="loadDoadores()">Listar Doadores</button>
+                <div id="doadoresList" class="table-container" style="margin-top: 1rem;"></div>
+                <div class="form-container" style="margin-top: 1rem;">
+                    <h4>Novo Doador</h4>
+                    <div class="form-group">
+                        <label for="doadorNome">Nome</label>
+                        <input id="doadorNome" type="text" placeholder="Nome do doador">
+                    </div>
+                    <div class="form-group">
+                        <label for="doadorEmail">Email</label>
+                        <input id="doadorEmail" type="email" placeholder="email@exemplo.com">
+                    </div>
+                    <button class="btn btn-primary" onclick="createDoador()">Cadastrar Doador</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Instituições</h3>
+                <button class="btn btn-secondary" onclick="loadInstituicoes()">Listar Instituições</button>
+                <div id="instituicoesList" class="table-container" style="margin-top: 1rem;"></div>
+                <div class="form-container" style="margin-top: 1rem;">
+                    <h4>Nova Instituição</h4>
+                    <div class="form-group">
+                        <label for="instituicaoNome">Nome</label>
+                        <input id="instituicaoNome" type="text" placeholder="Nome da instituição">
+                    </div>
+                    <div class="form-group">
+                        <label for="instituicaoEndereco">Endereço</label>
+                        <input id="instituicaoEndereco" type="text" placeholder="Endereço da instituição">
+                    </div>
+                    <button class="btn btn-primary" onclick="createInstituicao()">Cadastrar Instituição</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Doações</h3>
+                <button class="btn btn-secondary" onclick="loadDoacoes()">Listar Doações</button>
+                <div id="doacoesList" class="table-container" style="margin-top: 1rem;"></div>
+                <div class="form-container" style="margin-top: 1rem;">
+                    <h4>Nova Doação</h4>
+                    <div class="form-group">
+                        <label for="doacaoDoadorId">Doador</label>
+                        <select id="doacaoDoadorId"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="doacaoInstituicaoId">Instituição</label>
+                        <select id="doacaoInstituicaoId"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="doacaoDescricao">Descrição</label>
+                        <input id="doacaoDescricao" type="text" placeholder="Descrição da doação">
+                    </div>
+                    <div class="form-group">
+                        <label for="doacaoData">Data</label>
+                        <input id="doacaoData" type="date">
+                    </div>
+                    <button class="btn btn-primary" onclick="createDoacao()">Cadastrar Doação</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="message" class="alert alert-info" style="display:none; margin-top: 1rem;"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

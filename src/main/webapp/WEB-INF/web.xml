@@ -4,4 +4,31 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+
+  <servlet>
+    <servlet-name>DoadorApiServlet</servlet-name>
+    <servlet-class>br.com.doacaoalimentos.api.DoadorApiServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DoadorApiServlet</servlet-name>
+    <url-pattern>/api/doador/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>InstituicaoApiServlet</servlet-name>
+    <servlet-class>br.com.doacaoalimentos.api.InstituicaoApiServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>InstituicaoApiServlet</servlet-name>
+    <url-pattern>/api/instituicao/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DoacaoApiServlet</servlet-name>
+    <servlet-class>br.com.doacaoalimentos.api.DoacaoApiServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DoacaoApiServlet</servlet-name>
+    <url-pattern>/api/doacao/*</url-pattern>
+  </servlet-mapping>
 </web-app>

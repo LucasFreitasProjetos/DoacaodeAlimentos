@@ -52,6 +52,19 @@ CREATE TABLE doacoes (
     FOREIGN KEY (doador_id) REFERENCES doadores(id),
     FOREIGN KEY (instituicao_id) REFERENCES instituicoes(id)
 );
+
+-- Tabela de usuários para autenticação JWT (NOVO)
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Usuários de teste
+INSERT INTO usuarios (email, senha) VALUES 
+('teste@exemplo.com', '123456'),
+('admin@exemplo.com', 'senha123');
 ```
 
 ## Como Rodar
@@ -87,6 +100,13 @@ C:\xampp\tomcat\bin\startup.bat
 
 ## Endpoints da API REST
 
+### Autenticação JWT (NOVO - v1.1)
+- `POST /api/login` — autenticar e obter token
+  - Body: `{"email":"teste@exemplo.com", "senha":"123456"}`
+  - Response: `{"token":"eyJ...", "email":"teste@exemplo.com"}`
+- Todas as outras rotas requerem header: `Authorization: Bearer SEU_TOKEN`
+- Se token não for fornecido ou inválido, retorna: `{"erro":"Acesso não autorizado"}`
+
 ### Doadores
 - `GET /api/doador` — listar todos
 - `GET /api/doador/{id}` — buscar por ID
@@ -110,34 +130,45 @@ C:\xampp\tomcat\bin\startup.bat
 
 ## Como Testar
 
+### Via cURL (API REST com JWT)
+```bash
+# 1. Fazer login e obter token
+TOKEN=$(curl -s -X POST "http://localhost:8080/doacaoalimentos/api/login" \
+  -H "Content-Type: application/json" \
+  -d "{\"email\":\"teste@exemplo.com\", \"senha\":\"123456\"}" | grep -o '"token":"[^"]*' | cut -d'"' -f4)
+
+echo "Token obtido: $TOKEN"
+
+# 2. Usar o token para listar doadores
+curl -X GET "http://localhost:8080/doacaoalimentos/api/doador" \
+  -H "Authorization: Bearer $TOKEN"
+
+# 3. Criar doador com token
+curl -X POST "http://localhost:8080/doacaoalimentos/api/doador" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d "{\"nome\":\"João\", \"email\":\"joao@exemplo.com\"}"
+
+# 4. Tentar acesso sem token (será negado)
+curl -X GET "http://localhost:8080/doacaoalimentos/api/doador"
+# Resposta: {"erro": "Acesso não autorizado - Token não fornecido"}
+```
+
 ### Via Navegador (Front-end Web)
 1. Acesse: `http://localhost:8080/doacaoalimentos/app.html`
 2. Clique em "Listar Doadores", "Listar Instituições", "Listar Doações"
 3. Preencha os formulários e clique em "Cadastrar"
 
-### Via cURL (API REST)
-```bash
-# Listar doadores
-curl -X GET "http://localhost:8080/doacaoalimentos/api/doador"
-
-# Criar doador
-curl -X POST "http://localhost:8080/doacaoalimentos/api/doador" \
-  -H "Content-Type: application/json" \
-  -d "{\"nome\":\"João\", \"email\":\"joao@exemplo.com\"}"
-
-# Atualizar doador ID 1
-curl -X PUT "http://localhost:8080/doacaoalimentos/api/doador/1" \
-  -H "Content-Type: application/json" \
-  -d "{\"nome\":\"João Silva\"}"
-
-# Excluir doador ID 1
-curl -X DELETE "http://localhost:8080/doacaoalimentos/api/doador/1"
-```
-
 ### Via Postman ou Insomnia
-1. Importe a URL base: `http://localhost:8080/doacaoalimentos/api`
-2. Crie requisições GET, POST, PUT, DELETE para cada endpoint
-3. Use `Content-Type: application/json`
+1. **POST /api/login** (sem autenticação)
+   - URL: `http://localhost:8080/doacaoalimentos/api/login`
+   - Body: `{"email":"teste@exemplo.com", "senha":"123456"}`
+   - Copia o token da resposta
+
+2. **GET /api/doador** (com token)
+   - URL: `http://localhost:8080/doacaoalimentos/api/doador`
+   - Header: `Authorization: Bearer SEU_TOKEN_AQUI`
+   - Clique em Send
 
 ## Estrutura do Projeto
 
@@ -145,15 +176,20 @@ curl -X DELETE "http://localhost:8080/doacaoalimentos/api/doador/1"
 doacaoalimentos/
 ├── pom.xml                                   # Configuração Maven
 ├── README.md                                 # Este arquivo
+├── schema_jwt.sql                            # Script SQL para tabela de usuários
 ├── src/
 │   ├── main/
 │   │   ├── java/br/com/doacaoalimentos/
 │   │   │   ├── Main.java                    # Entrada principal (CLI)
 │   │   │   ├── api/
 │   │   │   │   ├── JsonUtil.java            # Utilitário para JSON (sem libs)
+│   │   │   │   ├── LoginApiServlet.java     # REST para login e geração de JWT (NOVO)
 │   │   │   │   ├── DoadorApiServlet.java    # REST para doadores
 │   │   │   │   ├── InstituicaoApiServlet.java # REST para instituições
 │   │   │   │   └── DoacaoApiServlet.java    # REST para doações
+│   │   │   ├── security/
+│   │   │   │   ├── JwtUtil.java             # Utilitário para JWT (NOVO)
+│   │   │   │   └── JwtFilter.java           # Filtro para validar tokens (NOVO)
 │   │   │   ├── controller/
 │   │   │   │   ├── DoadorController.java
 │   │   │   │   ├── InstituicaoController.java
@@ -162,24 +198,26 @@ doacaoalimentos/
 │   │   │   │   ├── Conexao.java             # Gerenciador de conexão MySQL
 │   │   │   │   ├── DoadorDAO.java
 │   │   │   │   ├── InstituicaoDAO.java
-│   │   │   │   └── DoacaoDao.java
+│   │   │   │   ├── DoacaoDao.java
+│   │   │   │   └── UsuarioDAO.java          # DAO para usuários (NOVO)
 │   │   │   ├── model/
 │   │   │   │   ├── Doador.java
 │   │   │   │   ├── Instituicao.java
-│   │   │   │   └── Doacao.java
+│   │   │   │   ├── Doacao.java
+│   │   │   │   └── Usuario.java             # Modelo de usuário (NOVO)
 │   │   │   └── view/
 │   │   │       └── Menu.java                # Menu CLI
 │   │   └── webapp/
 │   │       ├── index.jsp                    # Home page
-│   │       ├── app.html                     # Front-end simples (NOVO)
-│   │       ├── app.js                       # JavaScript para API (NOVO)
+│   │       ├── app.html                     # Front-end simples
+│   │       ├── app.js                       # JavaScript para API
 │   │       ├── css/
 │   │       │   └── estilo.css
 │   │       ├── doador/                      # JSPs legados
 │   │       ├── instituicao/
 │   │       ├── doacao/
 │   │       └── WEB-INF/
-│   │           └── web.xml                  # Mapeamento de servlets
+│   │           └── web.xml                  # Mapeamento de servlets e filtros
 │   └── test/
 │       └── java/                            # Testes (alguns desatualizados)
 └── target/
@@ -187,6 +225,15 @@ doacaoalimentos/
 ```
 
 ## Atualizações Recentes
+
+### Autenticação JWT (v1.1 - NOVO)
+- Adicionada camada de segurança com JWT (JSON Web Tokens)
+- Endpoint `/api/login` para gerar tokens
+- Todas as rotas `/api/*` (exceto login) requerem token válido
+- Token deve ser enviado no header: `Authorization: Bearer TOKEN`
+- Classe `JwtUtil` para geração e validação de tokens
+- Filtro `JwtFilter` que valida token em todas as requisições protegidas
+- Tabela `usuarios` no banco de dados para armazenar credenciais
 
 ### API REST Adicionada (v1.0)
 - Criada camada REST em `src/main/java/br/com/doacaoalimentos/api/`

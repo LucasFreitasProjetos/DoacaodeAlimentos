@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Doação - Sistema de Doações</title>
+    <link rel="stylesheet" href="../css/estilo.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🍎 Doação de Alimentos</div>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../doador/listar.html">Doadores</a></li>
+                <li><a href="../instituicao/listar.html">Instituições</a></li>
+                <li><a href="listar.html" class="active">Doações</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="form-container">
+            <h2 class="form-title">➕ Nova Doação</h2>
+
+            <div id="message" class="alert alert-info" style="display:none;"></div>
+
+            <form id="cadastroForm">
+                <div class="form-group">
+                    <label for="doadorId">Doador *</label>
+                    <select id="doadorId" name="doadorId" required>
+                        <option value="">Carregando doadores...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="instituicaoId">Instituição Beneficente *</label>
+                    <select id="instituicaoId" name="instituicaoId" required>
+                        <option value="">Carregando instituições...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="descricao">Descrição da Doação *</label>
+                    <textarea id="descricao" name="descricao" required placeholder="Descreva o que será doado (ex: 20kg de arroz, 10 latas de óleo, etc)"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="dataDoacao">Data da Doação *</label>
+                    <input type="date" id="dataDoacao" name="dataDoacao" required>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">💾 Registrar Doação</button>
+                    <a href="listar.html" class="btn btn-secondary">❌ Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Sistema de Doação de Alimentos. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="../js/api.js"></script>
+    <script>
+        async function loadSelectors() {
+            try {
+                const [doadoresResponse, instituicoesResponse] = await Promise.all([
+                    fetch(`${apiUrl}/doador`),
+                    fetch(`${apiUrl}/instituicao`)
+                ]);
+
+                if (!doadoresResponse.ok || !instituicoesResponse.ok) {
+                    throw new Error('Falha ao obter listas para os seletores');
+                }
+
+                const doadores = await doadoresResponse.json();
+                const instituicoes = await instituicoesResponse.json();
+
+                const doadorSelect = document.getElementById('doadorId');
+                doadorSelect.innerHTML = '<option value="">-- Selecione um doador --</option>';
+                if (doadores && doadores.length > 0) {
+                    doadores.forEach(d => {
+                        const opt = document.createElement('option');
+                        opt.value = d.id;
+                        opt.textContent = `${d.id} - ${d.nome}`;
+                        doadorSelect.appendChild(opt);
+                    });
+                } else {
+                    doadorSelect.innerHTML = '<option value="">Nenhum doador cadastrado</option>';
+                }
+
+                const instSelect = document.getElementById('instituicaoId');
+                instSelect.innerHTML = '<option value="">-- Selecione uma instituição --</option>';
+                if (instituicoes && instituicoes.length > 0) {
+                    instituicoes.forEach(i => {
+                        const opt = document.createElement('option');
+                        opt.value = i.id;
+                        opt.textContent = `${i.id} - ${i.nome}`;
+                        instSelect.appendChild(opt);
+                    });
+                } else {
+                    instSelect.innerHTML = '<option value="">Nenhuma instituição cadastrada</option>';
+                }
+
+            } catch (error) {
+                showMessage('Erro ao inicializar seletores de doadores/instituições.', 'danger');
+                console.error(error);
+            }
+        }
+
+        document.getElementById('cadastroForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const doadorId = document.getElementById('doadorId').value;
+            const substituicaoId = document.getElementById('instituicaoId').value;
+            const descricao = document.getElementById('descricao').value.trim();
+            const dataDoacao = document.getElementById('dataDoacao').value;
+
+            if (!doadorId || !substituicaoId || !descricao || !dataDoacao) {
+                showMessage('Por favor, preencha todos os campos.', 'warning');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${apiUrl}/doacao`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        doadorId: parseInt(doadorId),
+                        instituicaoId: parseInt(substituicaoId),
+                        descricao,
+                        dataDoacao
+                    })
+                });
+
+                if (response.ok || response.status === 201) {
+                    window.location.href = `listar.html?mensagem=${encodeURIComponent('Doação registrada com sucesso')}&tipo=success`;
+                } else {
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Erro ao registrar doação');
+                }
+            } catch (error) {
+                showMessage(`Erro ao registrar doação: ${error.message}`, 'danger');
+                console.error(error);
+            }
+        });
+
+        window.addEventListener('load', () => {
+            // Set default date as today
+            document.getElementById('dataDoacao').valueAsDate = new Date();
+            loadSelectors();
+        });
+    </script>
+</body>
+</html>

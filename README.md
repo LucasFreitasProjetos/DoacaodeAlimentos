@@ -208,14 +208,16 @@ doacaoalimentos/
 │   │   │   └── view/
 │   │   │       └── Menu.java                # Menu CLI
 │   │   └── webapp/
-│   │       ├── index.jsp                    # Home page
-│   │       ├── app.html                     # Front-end simples
+│   │       ├── index.html                   # Home page (HTML)
+│   │       ├── app.html                     # Front-end simples (API Dashboard)
 │   │       ├── app.js                       # JavaScript para API
 │   │       ├── css/
 │   │       │   └── estilo.css
-│   │       ├── doador/                      # JSPs legados
-│   │       ├── instituicao/
-│   │       ├── doacao/
+│   │       ├── js/
+│   │       │   └── api.js                       # Funções comuns da API
+│   │       ├── doador/                      # Páginas HTML de Doadores
+│   │       ├── instituicao/                 # Páginas HTML de Instituições
+│   │       ├── doacao/                      # Páginas HTML de Doações
 │   │       └── WEB-INF/
 │   │           └── web.xml                  # Mapeamento de servlets e filtros
 │   └── test/

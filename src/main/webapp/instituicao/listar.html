@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instituições - Sistema de Doações</title>
+    <link rel="stylesheet" href="../css/estilo.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🍎 Doação de Alimentos</div>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../doador/listar.html">Doadores</a></li>
+                <li><a href="listar.html" class="active">Instituições</a></li>
+                <li><a href="../doacao/listar.html">Doações</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">🏛️ Gerenciar Instituições</h1>
+            <a href="cadastro.html" class="btn btn-primary">➕ Nova Instituição</a>
+        </div>
+
+        <div id="message" class="alert alert-info" style="display:none;"></div>
+
+        <div id="listContainer" class="table-container" style="display:none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#ID</th>
+                        <th>Nome</th>
+                        <th>Endereço</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="instituicoesTableBody">
+                    <!-- Gerado dinamicamente por JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="emptyState" class="empty-state" style="display:none;">
+            <div class="empty-state-icon">📭</div>
+            <p>Nenhuma instituição cadastrada ainda</p>
+            <a href="cadastro.html" class="btn btn-primary" style="margin-top: 1rem;">Cadastrar Primeira Instituição</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Sistema de Doação de Alimentos. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="../js/api.js"></script>
+    <script>
+        async function loadInstituicoes() {
+            try {
+                const response = await fetch(`${apiUrl}/instituicao`);
+                if (!response.ok) {
+                    throw new Error('Falha ao obter lista de instituições');
+                }
+                const instituicoes = await response.json();
+                
+                const tableBody = document.getElementById('instituicoesTableBody');
+                const listContainer = document.getElementById('listContainer');
+                const emptyState = document.getElementById('emptyState');
+                
+                tableBody.innerHTML = '';
+                
+                if (instituicoes && instituicoes.length > 0) {
+                    instituicoes.forEach(inst => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>#${inst.id}</td>
+                            <td>${escapeHtml(inst.nome)}</td>
+                            <td>${escapeHtml(inst.endereco)}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="editar.html?id=${inst.id}" class="btn btn-secondary btn-small">✏️ Editar</a>
+                                    <button onclick="confirmarExclusao(${inst.id})" class="btn btn-danger btn-small">🗑️ Excluir</button>
+                                </div>
+                            </td>
+                        `;
+                        tableBody.appendChild(tr);
+                    });
+                    listContainer.style.display = 'block';
+                    emptyState.style.display = 'none';
+                } else {
+                    listContainer.style.display = 'none';
+                    emptyState.style.display = 'block';
+                }
+            } catch (error) {
+                showMessage('Erro ao carregar instituições.', 'danger');
+                console.error(error);
+            }
+        }
+
+        async function confirmarExclusao(id) {
+            if (confirm('Tem certeza que deseja excluir esta instituição?')) {
+                try {
+                    const response = await fetch(`${apiUrl}/instituicao/${id}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok || response.status === 204) {
+                        showMessage('Instituição removida com sucesso!', 'success');
+                        loadInstituicoes();
+                    } else {
+                        throw new Error('Erro ao remover instituição');
+                    }
+                } catch (error) {
+                    showMessage('Erro ao remover instituição. Verifique se ela não possui doações vinculadas.', 'danger');
+                    console.error(error);
+                }
+            }
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        window.addEventListener('load', () => {
+            const mensagem = getQueryParam('mensagem');
+            const tipo = getQueryParam('tipo');
+            if (mensagem) {
+                showMessage(mensagem, tipo || 'success');
+            }
+            loadInstituicoes();
+        });
+    </script>
+</body>
+</html>

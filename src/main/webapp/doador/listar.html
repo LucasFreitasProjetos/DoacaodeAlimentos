@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doadores - Sistema de Doações</title>
+    <link rel="stylesheet" href="../css/estilo.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🍎 Doação de Alimentos</div>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="listar.html" class="active">Doadores</a></li>
+                <li><a href="../instituicao/listar.html">Instituições</a></li>
+                <li><a href="../doacao/listar.html">Doações</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">👥 Gerenciar Doadores</h1>
+            <a href="cadastro.html" class="btn btn-primary">➕ Novo Doador</a>
+        </div>
+
+        <div id="message" class="alert alert-info" style="display:none;"></div>
+
+        <div id="listContainer" class="table-container" style="display:none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#ID</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="doadoresTableBody">
+                    <!-- Gerado dinamicamente por JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="emptyState" class="empty-state" style="display:none;">
+            <div class="empty-state-icon">📭</div>
+            <p>Nenhum doador cadastrado ainda</p>
+            <a href="cadastro.html" class="btn btn-primary" style="margin-top: 1rem;">Cadastrar Primeiro Doador</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Sistema de Doação de Alimentos. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="../js/api.js"></script>
+    <script>
+        async function loadDoadores() {
+            try {
+                const response = await fetch(`${apiUrl}/doador`);
+                if (!response.ok) {
+                    throw new Error('Falha ao obter lista de doadores');
+                }
+                const doadores = await response.json();
+                
+                const tableBody = document.getElementById('doadoresTableBody');
+                const listContainer = document.getElementById('listContainer');
+                const emptyState = document.getElementById('emptyState');
+                
+                tableBody.innerHTML = '';
+                
+                if (doadores && doadores.length > 0) {
+                    doadores.forEach(doador => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>#${doador.id}</td>
+                            <td>${escapeHtml(doador.nome)}</td>
+                            <td>${escapeHtml(doador.email)}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="editar.html?id=${doador.id}" class="btn btn-secondary btn-small">✏️ Editar</a>
+                                    <button onclick="confirmarExclusao(${doador.id})" class="btn btn-danger btn-small">🗑️ Excluir</button>
+                                </div>
+                            </td>
+                        `;
+                        tableBody.appendChild(tr);
+                    });
+                    listContainer.style.display = 'block';
+                    emptyState.style.display = 'none';
+                } else {
+                    listContainer.style.display = 'none';
+                    emptyState.style.display = 'block';
+                }
+            } catch (error) {
+                showMessage('Erro ao carregar doadores.', 'danger');
+                console.error(error);
+            }
+        }
+
+        async function confirmarExclusao(id) {
+            if (confirm('Tem certeza que deseja excluir este doador?')) {
+                try {
+                    const response = await fetch(`${apiUrl}/doador/${id}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok || response.status === 204) {
+                        showMessage('Doador removido com sucesso!', 'success');
+                        loadDoadores();
+                    } else {
+                        throw new Error('Erro ao remover doador');
+                    }
+                } catch (error) {
+                    showMessage('Erro ao remover doador. Verifique se ele não possui doações vinculadas.', 'danger');
+                    console.error(error);
+                }
+            }
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        // Mostrar mensagens vindas de redirecionamento (via query params se houver)
+        window.addEventListener('load', () => {
+            const mensagem = getQueryParam('mensagem');
+            const tipo = getQueryParam('tipo');
+            if (mensagem) {
+                showMessage(mensagem, tipo || 'success');
+            }
+            loadDoadores();
+        });
+    </script>
+</body>
+</html>

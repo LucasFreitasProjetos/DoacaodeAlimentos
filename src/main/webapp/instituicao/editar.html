@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Instituição - Sistema de Doações</title>
+    <link rel="stylesheet" href="../css/estilo.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🍎 Doação de Alimentos</div>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../doador/listar.html">Doadores</a></li>
+                <li><a href="listar.html" class="active">Instituições</a></li>
+                <li><a href="../doacao/listar.html">Doações</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="form-container">
+            <h2 class="form-title">✏️ Editar Instituição</h2>
+
+            <div id="message" class="alert alert-info" style="display:none;"></div>
+
+            <form id="editarForm">
+                <input type="hidden" id="instituicaoId">
+                <div class="form-group">
+                    <label for="nome">Nome *</label>
+                    <input type="text" id="nome" name="nome" required placeholder="Digite o nome da instituição">
+                </div>
+
+                <div class="form-group">
+                    <label for="endereco">Endereço *</label>
+                    <input type="text" id="endereco" name="endereco" required placeholder="Digite o endereço completo">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">💾 Salvar Alterações</button>
+                    <a href="listar.html" class="btn btn-secondary">❌ Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Sistema de Doação de Alimentos. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="../js/api.js"></script>
+    <script>
+        const id = getQueryParam('id');
+
+        async function loadInstituicao() {
+            if (!id) {
+                window.location.href = 'listar.html?mensagem=ID inválido&tipo=danger';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${apiUrl}/instituicao/${id}`);
+                if (!response.ok) {
+                    throw new Error('Instituição não encontrada');
+                }
+                const inst = await response.json();
+                
+                document.getElementById('instituicaoId').value = inst.id;
+                document.getElementById('nome').value = inst.nome;
+                document.getElementById('endereco').value = inst.endereco;
+            } catch (error) {
+                console.error(error);
+                window.location.href = `listar.html?mensagem=${encodeURIComponent('Instituição não encontrada')}&tipo=danger`;
+            }
+        }
+
+        document.getElementById('editarForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const nome = document.getElementById('nome').value.trim();
+            const endereco = document.getElementById('endereco').value.trim();
+
+            if (!nome || !endereco) {
+                showMessage('Por favor, preencha todos os campos.', 'warning');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${apiUrl}/instituicao/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ nome, endereco })
+                });
+
+                if (response.ok) {
+                    window.location.href = `listar.html?mensagem=${encodeURIComponent('Instituição atualizada com sucesso')}&tipo=success`;
+                } else {
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Erro ao atualizar instituição');
+                }
+            } catch (error) {
+                showMessage(`Erro ao atualizar instituição: ${error.message}`, 'danger');
+                console.error(error);
+            }
+        });
+
+        window.addEventListener('load', loadInstituicao);
+    </script>
+</body>
+</html>

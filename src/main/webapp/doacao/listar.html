@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doações - Sistema de Doações</title>
+    <link rel="stylesheet" href="../css/estilo.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🍎 Doação de Alimentos</div>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../doador/listar.html">Doadores</a></li>
+                <li><a href="../instituicao/listar.html">Instituições</a></li>
+                <li><a href="listar.html" class="active">Doações</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">📦 Gerenciar Doações</h1>
+            <a href="cadastro.html" class="btn btn-primary">➕ Nova Doação</a>
+        </div>
+
+        <div id="message" class="alert alert-info" style="display:none;"></div>
+
+        <div id="listContainer" class="table-container" style="display:none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#ID</th>
+                        <th>Doador</th>
+                        <th>Instituição</th>
+                        <th>Descrição</th>
+                        <th>Data</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="doacoesTableBody">
+                    <!-- Gerado dinamicamente por JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="emptyState" class="empty-state" style="display:none;">
+            <div class="empty-state-icon">📭</div>
+            <p>Nenhuma doação cadastrada ainda</p>
+            <a href="cadastro.html" class="btn btn-primary" style="margin-top: 1rem;">Registrar Primeira Doação</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Sistema de Doação de Alimentos. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="../js/api.js"></script>
+    <script>
+        async function loadDoacoesData() {
+            try {
+                const [doadoresResponse, instituicoesResponse, doacoesResponse] = await Promise.all([
+                    fetch(`${apiUrl}/doador`),
+                    fetch(`${apiUrl}/instituicao`),
+                    fetch(`${apiUrl}/doacao`)
+                ]);
+
+                if (!doadoresResponse.ok || !instituicoesResponse.ok || !doacoesResponse.ok) {
+                    throw new Error('Falha ao obter dados para listagem');
+                }
+
+                const doadores = await doadoresResponse.json();
+                const instituicoes = await instituicoesResponse.json();
+                const doacoes = await doacoesResponse.json();
+
+                const doadorMap = {};
+                doadores.forEach(d => {
+                    doadorMap[d.id] = d.nome;
+                });
+
+                const instMap = {};
+                instituicoes.forEach(i => {
+                    instMap[i.id] = i.nome;
+                });
+
+                const tableBody = document.getElementById('doacoesTableBody');
+                const listContainer = document.getElementById('listContainer');
+                const emptyState = document.getElementById('emptyState');
+                
+                tableBody.innerHTML = '';
+                
+                if (doacoes && doacoes.length > 0) {
+                    doacoes.forEach(doacao => {
+                        const tr = document.createElement('tr');
+                        const doadorNome = doadorMap[doacao.doadorId] || `ID #${doacao.doadorId}`;
+                        const instNome = instMap[doacao.instituicaoId] || `ID #${doacao.instituicaoId}`;
+                        
+                        tr.innerHTML = `
+                            <td>#${doacao.id}</td>
+                            <td>${escapeHtml(doadorNome)}</td>
+                            <td>${escapeHtml(instNome)}</td>
+                            <td>${escapeHtml(doacao.descricao)}</td>
+                            <td>${escapeHtml(doacao.dataDoacao)}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="editar.html?id=${doacao.id}" class="btn btn-secondary btn-small">✏️ Editar</a>
+                                    <button onclick="confirmarExclusao(${doacao.id})" class="btn btn-danger btn-small">🗑️ Excluir</button>
+                                </div>
+                            </td>
+                        `;
+                        tableBody.appendChild(tr);
+                    });
+                    listContainer.style.display = 'block';
+                    emptyState.style.display = 'none';
+                } else {
+                    listContainer.style.display = 'none';
+                    emptyState.style.display = 'block';
+                }
+            } catch (error) {
+                showMessage('Erro ao carregar doações.', 'danger');
+                console.error(error);
+            }
+        }
+
+        async function confirmarExclusao(id) {
+            if (confirm('Tem certeza que deseja excluir esta doação?')) {
+                try {
+                    const response = await fetch(`${apiUrl}/doacao/${id}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok || response.status === 204) {
+                        showMessage('Doação removida com sucesso!', 'success');
+                        loadDoacoesData();
+                    } else {
+                        throw new Error('Erro ao remover doação');
+                    }
+                } catch (error) {
+                    showMessage('Erro ao remover doação.', 'danger');
+                    console.error(error);
+                }
+            }
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        window.addEventListener('load', () => {
+            const mensagem = getQueryParam('mensagem');
+            const tipo = getQueryParam('tipo');
+            if (mensagem) {
+                showMessage(mensagem, tipo || 'success');
+            }
+            loadDoacoesData();
+        });
+    </script>
+</body>
+</html>

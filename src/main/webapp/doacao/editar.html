@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Doação - Sistema de Doações</title>
+    <link rel="stylesheet" href="../css/estilo.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🍎 Doação de Alimentos</div>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../doador/listar.html">Doadores</a></li>
+                <li><a href="../instituicao/listar.html">Instituições</a></li>
+                <li><a href="listar.html" class="active">Doações</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="form-container">
+            <h2 class="form-title">✏️ Editar Doação</h2>
+
+            <div id="message" class="alert alert-info" style="display:none;"></div>
+
+            <form id="editarForm">
+                <input type="hidden" id="doacaoId">
+                <div class="form-group">
+                    <label for="doadorId">Doador *</label>
+                    <select id="doadorId" name="doadorId" required>
+                        <option value="">Carregando doadores...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="instituicaoId">Instituição Beneficente *</label>
+                    <select id="instituicaoId" name="instituicaoId" required>
+                        <option value="">Carregando instituições...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="descricao">Descrição da Doação *</label>
+                    <textarea id="descricao" name="descricao" required placeholder="Descreva o que será doado"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="dataDoacao">Data da Doação *</label>
+                    <input type="date" id="dataDoacao" name="dataDoacao" required>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">💾 Salvar Alterações</button>
+                    <a href="listar.html" class="btn btn-secondary">❌ Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Sistema de Doação de Alimentos. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="../js/api.js"></script>
+    <script>
+        const id = getQueryParam('id');
+
+        async function initForm() {
+            if (!id) {
+                window.location.href = 'listar.html?mensagem=ID inválido&tipo=danger';
+                return;
+            }
+
+            try {
+                // Fetch selectors and doacao details in parallel
+                const [doadoresResponse, instituicoesResponse, doacaoResponse] = await Promise.all([
+                    fetch(`${apiUrl}/doador`),
+                    fetch(`${apiUrl}/instituicao`),
+                    fetch(`${apiUrl}/doacao/${id}`)
+                ]);
+
+                if (!doadoresResponse.ok || !instituicoesResponse.ok || !doacaoResponse.ok) {
+                    throw new Error('Falha ao obter dados para edição');
+                }
+
+                const doadores = await doadoresResponse.json();
+                const instituicoes = await instituicoesResponse.json();
+                const doacao = await doacaoResponse.json();
+
+                // Populate form fields
+                document.getElementById('doacaoId').value = doacao.id;
+                document.getElementById('descricao').value = doacao.descricao;
+                document.getElementById('dataDoacao').value = doacao.dataDoacao;
+
+                // Populate and pre-select Doador
+                const doadorSelect = document.getElementById('doadorId');
+                doadorSelect.innerHTML = '<option value="">-- Selecione um doador --</option>';
+                doadores.forEach(d => {
+                    const opt = document.createElement('option');
+                    opt.value = d.id;
+                    opt.textContent = `${d.id} - ${d.nome}`;
+                    if (d.id === doacao.doadorId) {
+                        opt.selected = true;
+                    }
+                    doadorSelect.appendChild(opt);
+                });
+
+                // Populate and pre-select Instituição
+                const instSelect = document.getElementById('instituicaoId');
+                instSelect.innerHTML = '<option value="">-- Selecione uma instituição --</option>';
+                instituicoes.forEach(i => {
+                    const opt = document.createElement('option');
+                    opt.value = i.id;
+                    opt.textContent = `${i.id} - ${i.nome}`;
+                    if (i.id === doacao.instituicaoId) {
+                        opt.selected = true;
+                    }
+                    instSelect.appendChild(opt);
+                });
+
+            } catch (error) {
+                console.error(error);
+                window.location.href = `listar.html?mensagem=${encodeURIComponent('Erro ao carregar dados do formulário')}&tipo=danger`;
+            }
+        }
+
+        document.getElementById('editarForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const doadorId = document.getElementById('doadorId').value;
+            const instituicaoId = document.getElementById('instituicaoId').value;
+            const descricao = document.getElementById('descricao').value.trim();
+            const dataDoacao = document.getElementById('dataDoacao').value;
+
+            if (!doadorId || !instituicaoId || !descricao || !dataDoacao) {
+                showMessage('Por favor, preencha todos os campos.', 'warning');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${apiUrl}/doacao/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        doadorId: parseInt(doadorId),
+                        instituicaoId: parseInt(instituicaoId),
+                        descricao,
+                        dataDoacao
+                    })
+                });
+
+                if (response.ok) {
+                    window.location.href = `listar.html?mensagem=${encodeURIComponent('Doação atualizada com sucesso')}&tipo=success`;
+                } else {
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Erro ao atualizar doação');
+                }
+            } catch (error) {
+                showMessage(`Erro ao atualizar doação: ${error.message}`, 'danger');
+                console.error(error);
+            }
+        });
+
+        window.addEventListener('load', initForm);
+    </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Doador - Sistema de Doações</title>
+    <link rel="stylesheet" href="../css/estilo.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🍎 Doação de Alimentos</div>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="listar.html" class="active">Doadores</a></li>
+                <li><a href="../instituicao/listar.html">Instituições</a></li>
+                <li><a href="../doacao/listar.html">Doações</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="form-container">
+            <h2 class="form-title">➕ Novo Doador</h2>
+
+            <div id="message" class="alert alert-info" style="display:none;"></div>
+
+            <form id="cadastroForm">
+                <div class="form-group">
+                    <label for="nome">Nome *</label>
+                    <input type="text" id="nome" name="nome" required placeholder="Digite o nome completo">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required placeholder="Digite o email">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">💾 Salvar</button>
+                    <a href="listar.html" class="btn btn-secondary">❌ Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Sistema de Doação de Alimentos. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="../js/api.js"></script>
+    <script>
+        document.getElementById('cadastroForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            const nome = document.getElementById('nome').value.trim();
+            const email = document.getElementById('email').value.trim();
+
+            if (!nome || !email) {
+                showMessage('Por favor, preencha todos os campos.', 'warning');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${apiUrl}/doador`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ nome, email })
+                });
+
+                if (response.ok || response.status === 201) {
+                    window.location.href = `listar.html?mensagem=${encodeURIComponent('Doador cadastrado com sucesso')}&tipo=success`;
+                } else {
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Erro ao cadastrar doador');
+                }
+            } catch (error) {
+                showMessage(`Erro ao cadastrar doador: ${error.message}`, 'danger');
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>
